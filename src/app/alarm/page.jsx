@@ -68,14 +68,14 @@ const generateCalendarData = (year) => {
         MONTHS.forEach((month, monthIndex) => {
             const values = Array(4).fill(null).map((_, weekIndex) => {
                 const seed = year * 1000 + monthIndex * 100 + DAYS.indexOf(day) * 10 + weekIndex;
-                const rand = seededRandom(seed);
+                const random = seededRandom(seed);
 
                 if (monthIndex < 12) {
-                    if (rand < 0.3) return 2;
-                    if (rand < 0.6) return 1;
+                    if (random < 0.3) return 2;
+                    if (random < 0.6) return 1;
                     return 0;
                 }
-                return rand < 0.15 ? 2 : 0;
+                return random < 0.15 ? 2 : 0;
             });
 
             data[day][month] = values;
@@ -98,7 +98,7 @@ const AlarmPage = () => {
         if (value === 0) return 'bg-red-300';
         if (value === 1) return 'bg-red-500';
         if (value === 2) return 'bg-red-800';
-        return 'bg-green-500';
+        return 'bg-black';
     };
 
     return (
@@ -110,13 +110,13 @@ const AlarmPage = () => {
                     <div className="flex gap-2">
                         <button
                             onClick={() => setCurrentYear(prev => prev - 1)}
-                            className="p-2 bg-blue-500 text-white rounded hover:bg-red-600"
+                            className="p-1 bg-blue-400 text-white rounded hover:bg-blue-600"
                         >
                             <ChevronLeft size={20} />
                         </button>
                         <button
                             onClick={() => setCurrentYear(prev => prev + 1)}
-                            className="p-2 bg-blue-500 text-white rounded hover:bg-red-600"
+                            className="p-1 bg-blue-400 text-white rounded hover:bg-blue-600"
                         >
                             <ChevronRight size={20} />
                         </button>
@@ -159,7 +159,7 @@ const AlarmPage = () => {
                         <div className="w-4 h-4 bg-red-300"></div>
                         <div className="w-4 h-4 bg-red-500"></div>
                         <div className="w-4 h-4 bg-red-800"></div>
-                        <div className="w-4 h-4 bg-green-500"></div>
+                        <div className="w-4 h-4 bg-black"></div>
                     </div>
                     <span>More</span>
                 </div>
@@ -176,7 +176,7 @@ const AlarmPage = () => {
                         <option>Shibaura SH-253TC, ...</option>
                     </select>
                 </div>
-                <button className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                <button className="flex items-center gap-2 bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-600">
                     <Download size={20} />
                     Export
                 </button>
