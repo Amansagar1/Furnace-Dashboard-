@@ -1,40 +1,6 @@
 import React from "react";
 
-const Pagination = ({ currentPage, totalPages, onPageChange, dataToDownload }) => {
-    const convertToCSV = (data) => {
-        if (!data || data.length === 0) return '';
-
-        const headers = Object.keys(data[0]);
-        const csvRows = [];
-
-        // Add headers
-        csvRows.push(headers.join(','));
-
-        // Add data rows
-        for (const row of data) {
-            const values = headers.map(header => {
-                const escaped = ('' + row[header]).replace(/"/g, '""');
-                return `"${escaped}"`;
-            });
-            csvRows.push(values.join(','));
-        }
-
-        return csvRows.join('\n');
-    };
-
-    // Function to trigger CSV download
-    const downloadCSV = () => {
-        const csvData = convertToCSV(dataToDownload);
-        const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.setAttribute('href', url);
-        a.setAttribute('download', 'data.csv');
-        a.style.visibility = 'hidden';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    };
+const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
     // Determine which page numbers to display
     const getPageNumbersToShow = () => {
@@ -73,7 +39,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, dataToDownload }) =
     const pageNumbersToShow = getPageNumbersToShow();
 
     return (
-        <div className="flex justify-between items-center gap-2 w-full p-2 bg-[#F7F4F4]">
+        <div className="flex justify-between items-center gap-2 w-full p-2 bg-gray-100">
             <div className="flex items-center justify-center w-full gap-4">
                 <button
                     disabled={currentPage === 1}
@@ -105,9 +71,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange, dataToDownload }) =
                     Next
                 </button>
             </div>
-            <button onClick={downloadCSV} className="bg-sky-500 text-white rounded hover:bg-sky-600 transition duration-300 w-28 p-2 flex justify-center items-center ">
-                Download CSV
-            </button>
         </div>
     );
 };

@@ -764,7 +764,7 @@ const PlantDashboard = ({ params }) => {
                     fetchData(['P_GAS_LINE_B_HP', '	P_GAS_LINE_A_HP'], setBasicMetricsData),
                     fetchData(['AIR_FLOW_RPM'], setAirFlowData),
                     fetchData([
-                        'RTD_2_TOP_TEMP', 'RTD_2_TOP_TEMP', 'RTD_3_TOP_TEMP',
+                        'RTD_1_TOP_TEMP', 'RTD_2_TOP_TEMP', 'RTD_3_TOP_TEMP',
                         'RTD_4_TOP_TEMP', 'RTD_5_TOP_TEMP', 'RTD_6_TOP_TEMP'
                     ], setTopTempData),
                     fetchData([
@@ -822,7 +822,7 @@ const PlantDashboard = ({ params }) => {
         {
             title: "LPG Pressures",
             data: performanceData,
-            yAxisLabel: "Percentage (%)"
+            yAxisLabel: "Pressure (kg/cm²)"
         }
     ];
 
@@ -904,8 +904,7 @@ const PlantDashboard = ({ params }) => {
 
                     {/* SVG Image */}
                     <div className="bg-gray-200 rounded-lg shadow-md p-4">
-                        {/* <h2 className="text-lg font-semibold mb-4">System Visualization</h2> */}
-                        <div className="w-full h-[400px] flex justify-center items-center">
+                        <div className="w-full h-[400px] flex justify-center items-center p-2">
                             <SvgImage data={svgData} />
                         </div>
                     </div>
