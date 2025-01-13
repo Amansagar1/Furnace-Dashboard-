@@ -4,7 +4,7 @@ import React from 'react';
 
 const DashboardInfoCard = ({ title, value, icon: Icon, trend, color }) => {
     return (
-        <div className="bg-white p-6 rounded-lg shadow-md flex justify-between items-center">
+        <div className="bg-white p-6 rounded-lg shadow-md flex justify-between items-center border">
             <div>
                 <h3 className="text-gray-500 text-sm">{title}</h3>
                 <p className="text-2xl font-semibold mt-1">{value}</p>

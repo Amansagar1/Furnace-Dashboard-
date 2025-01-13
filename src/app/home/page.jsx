@@ -1,118 +1,3 @@
-// "use client"
-// import { useState } from 'react';
-// import Navbar from '@/Components/Header/Navbar';
-// import Sidebar from '@/Components/Sidebar/Sidebar';
-
-// const HomePage = () => {
-//     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-//     const toggleSidebar = () => {
-//         setIsSidebarOpen(!isSidebarOpen);
-//     };
-
-//     const data = [
-//         { ar: 100, pr: 80, qr: 95, oee: 90, runTime: "0h 30m", downTime: "0h 48m" },
-//         { ar: 95, pr: 70, qr: 90, oee: 85, runTime: "1h 20m", downTime: "0h 10m" },
-//         { ar: 85, pr: 60, qr: 75, oee: 80, runTime: "2h 15m", downTime: "1h 05m" },
-//         { ar: 90, pr: 75, qr: 85, oee: 88, runTime: "3h 00m", downTime: "0h 20m" },
-//         { ar: 92, pr: 78, qr: 88, oee: 89, runTime: "4h 10m", downTime: "0h 15m" },
-//     ];
-
-//     return (
-//         <div className="min-h-screen bg-gray-50">
-//             <Navbar toggleSidebar={toggleSidebar} />
-//             <Sidebar isOpen={isSidebarOpen} />
-//             <main className={`pt-16 transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}>
-//                 <div className="flex flex-col bg-gray-50">
-//                     {/* Status Indicators */}
-//                     <div className="grid grid-cols-5 gap-4 p-6 bg-white shadow-md rounded-lg">
-//                         {[
-//                             { label: 'Running', color: 'bg-sky-500', value: '3/16' },
-//                             { label: 'Power Off', color: 'bg-red-500', value: '5/16' },
-//                             { label: 'Stop', color: 'bg-yellow-500', value: '4/16' },
-//                             { label: 'Setup', color: 'bg-blue-500', value: '1/16' },
-//                             { label: 'M/C Breakdown', color: 'bg-teal-500', value: '6%' },
-//                         ].map((status, index) => (
-//                             <div key={index} className="flex items-center space-x-3">
-//                                 <div className={`w-6 h-6 ${status.color} rounded-full`}></div>
-//                                 <span className="text-lg font-medium text-gray-700">{status.label}: {status.value}</span>
-//                             </div>
-//                         ))}
-//                     </div>
-
-//                     {/* Table */}
-//                     <div className="overflow-x-auto p-6">
-//                         <table className="w-full border-collapse bg-white shadow-md rounded-lg">
-//                             <thead className="bg-gray-200">
-//                                 <tr>
-//                                     <th className="font-medium text-gray-600">S.No</th>
-//                                     <th className=" text-left font-medium text-gray-600">Machine Name</th>
-//                                     <th className=" text-left font-medium text-gray-600">Machine Inventory Status</th>
-//                                     <th className=" text-left font-medium text-gray-600 pl-4">AR</th>
-//                                     <th className=" text-left font-medium text-gray-600 pl-4">PR</th>
-//                                     <th className=" text-left font-medium text-gray-600 pl-4">QR</th>
-//                                     <th className=" text-left font-medium text-gray-600 pl-4">OEE</th>
-//                                     <th className=" text-left font-medium text-gray-600">Run Time</th>
-//                                     <th className="p-4 text-left font-medium text-gray-600">Down Time</th>
-//                                 </tr>
-//                             </thead>
-//                             <tbody>
-//                                 {data.map((item, index) => (
-//                                     <tr key={index} className="hover:bg-gray-100 border-b">
-//                                         <td className="p-4 text-center">{index + 1}</td>
-//                                         <td className="">CNC Machine {index + 1}</td>
-//                                         <td className=" ">
-//                                             <div className="flex items-center justify-left space-x-1">
-//                                                 <div className="w-10 h-2 bg-red-500"></div>
-//                                                 <div className="w-10 h-2 bg-green-500"></div>
-//                                                 <div className="w-10 h-2 bg-red-500"></div>
-//                                                 <div className="w-10 h-2 bg-green-500"></div>
-//                                             </div>
-//                                         </td>
-//                                         {["ar", "pr", "qr", "oee"].map((key) => (
-//                                             <td key={key} className="p-1">
-//                                                 <div className="relative w-12 h-12">
-//                                                     {/* Thinner circle with live progress */}
-//                                                     <div
-//                                                         className="absolute top-0 left-0 w-full h-full rounded-full"
-//                                                         style={{
-//                                                             background: `conic-gradient(
-//                          #38bdf8 ${item[key] * 3.6}deg,  
-//                         #ddd 0deg
-//                     )`,
-//                                                             borderRadius: '50%',
-//                                                             // Make the circle line thinner
-//                                                             boxSizing: 'border-box',
-//                                                             borderWidth: '1px',  // Even thinner line
-//                                                             borderColor: ' #4caf50',
-//                                                             transition: 'background 0.3s ease', // Smooth transition for live progress
-//                                                         }}
-//                                                     ></div>
-//                                                     <div className="absolute top-2 left-2 w-8 h-8 bg-white rounded-full flex items-center justify-center">
-//                                                         <span className="text-sm font-medium text-gray-700">{item[key]}%</span>
-//                                                     </div>
-//                                                 </div>
-//                                             </td>
-//                                         ))}
-
-
-//                                         <td className=" text-left">{item.runTime}</td>
-//                                         <td className="p-4 text-left">{item.downTime}</td>
-//                                     </tr>
-//                                 ))}
-//                             </tbody>
-//                         </table>
-//                     </div>
-//                 </div>
-//             </main>
-//         </div>
-//     );
-// };
-
-// export default HomePage;
-
-
-
 "use client"
 import React, { useState } from 'react';
 import Navbar from '@/Components/Header/Navbar';
@@ -271,7 +156,7 @@ const HomePage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-gray-50">
             {/* <Navbar toggleSidebar={toggleSidebar} />
             <Sidebar
                 isOpen={isSidebarOpen}
@@ -283,10 +168,9 @@ const HomePage = () => {
                     ? (isCollapsed ? 'ml-16' : 'ml-64')
                     : 'ml-0'}`}> */}
             <div className="p-6">
-                <div className="mb-6">
 
-                    {/* Status Indicators */}
-                    <div className="grid grid-cols-5 gap-4 mb-6">
+                {/* Status Indicators */}
+                {/* <div className="grid grid-cols-5 gap-4 mb-6">
                         {statusIndicators.map((indicator, index) => (
                             <div key={index} className="bg-white p-3 rounded-lg shadow-sm flex items-center space-x-4">
                                 {indicator.icon()}
@@ -300,90 +184,124 @@ const HomePage = () => {
                                 </div>
                             </div>
                         ))}
-                    </div>
+                    </div> */}
+                {/* Overview Cards */}
+                <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+                    {[
+                        { label: "Overall OEE", value: "94%", color: "green", change: "increase" },
+                        { label: "Running Production", value: "85.60%", color: "orange", change: "decrease" },
+                        { label: "Quality", value: "100%", color: "green", change: "increase" },
+                        { label: "Performance", value: "94%", color: "orange", change: "decrease" },
+                        { label: "Downtime", value: "10%", color: "orange", change: "decrease" }
+                    ].map((item, index) => (
+                        <div
+                            key={index}
+                            className={`p-3 flex items-center justify-center text-[16px] rounded-lg shadow bg-white border-l-4 ${item.color === "green" ? "border-[#00DD6E]" : "border-orange-500"
+                                } flex flex-col justify-between h-40 w-full`}
+                        >
+                            <div className="flex justify-between items-center">
+                                <h2 className="text-gray-500 text-[18px]">{item.label}</h2>
+                            </div>
+                            <div className="mt-2 text-[32px] font-bold text-gray-800">
+                                {item.value}
+                            </div>
 
-                    {/* Machine Table */}
-                    <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-                        <table className="w-full">
-                            <thead className="bg-gray-50 ">
-                                <tr>
-                                    <th className="px-4 py-3 text-left text-sm font-bold">S.No</th>
-                                    <th className="px-4 py-3 text-left text-sm font-bold">Machine Name</th>
-                                    <th className="px-4 py-3 text-left text-sm font-bold">Machine Summary Status</th>
-                                    <th className="px-4 py-3 text-center text-sm font-bold">AR</th>
-                                    <th className="px-4 py-3 text-center text-sm font-bold">PR</th>
-                                    <th className="px-4 py-3 text-center text-sm font-bold">QR</th>
-                                    <th className="px-4 py-3 text-center text-sm font-bold">OEE</th>
-                                    <th className="px-4 py-3 text-left text-sm font-bold">Run Time</th>
-                                    <th className="px-4 py-3 text-left text-sm font-bold">Down Time</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {data.map((item, index) => (
-                                    <tr key={item.id} className="border-t border-gray-200 hover:bg-gray-50">
-                                        <td className="px-4 py-4">{index + 1}</td>
-                                        <td className="px-4 py-4">
-                                            <div className="flex items-center space-x-2">
-                                                {getStatusIcon(item.status)}
-                                                <div>
-                                                    <p className="text-xl text-blue-500">{item.id}</p>
-                                                    <p className="text-sm text-blue-600">{item.name}</p>
-                                                    <p className="text-sm text-gray-600">{item.product}</p>
-                                                </div>
+                            {/* Green/Red border arrow button */}
+                            <div className="mt-4 flex justify-end items-center space-x-2">
+                                <button
+                                    className={`w-6 h-6 flex items-center justify-center rounded-full border-2 ${item.change === "increase" ? "border-green-500" : "border-red-500"
+                                        } bg-white text-${item.change === "increase" ? "green" : "red"
+                                        }-500`}
+                                    aria-label={item.change === "increase" ? "Increase" : "Decrease"}
+                                >
+                                    {item.change === "increase" ? (
+                                        <span className="text-sm p-1">↑</span>
+                                    ) : (
+                                        <span className="text-sm p-1">↓</span>
+                                    )}
+                                </button>
+                                <div
+                                    className={`text-sm text-gray-400 ${item.change === "increase" ? "text-green-500" : "text-red-500"
+                                        }`}
+                                >
+                                    {/* Adjust the change text to show +5% or -5% */}
+                                    {item.change === "increase" ? "+5%" : "-5%"}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Machine Table */}
+                <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <table className="w-full border">
+                        <thead>
+                            <tr className='bg-gray-100 border-b'>
+                                <th className="px-4 py-3 text-left text-sm font-bold">S.No</th>
+                                <th className="px-4 py-3 text-left text-sm font-bold">Machine Name</th>
+                                <th className="px-4 py-3 text-center text-sm font-bold">AR</th>
+                                <th className="px-4 py-3 text-center text-sm font-bold">PR</th>
+                                <th className="px-4 py-3 text-center text-sm font-bold">QR</th>
+                                <th className="px-4 py-3 text-center text-sm font-bold">OEE</th>
+                                <th className="px-4 py-3 text-left text-sm font-bold">Run Time</th>
+                                <th className="px-4 py-3 text-left text-sm font-bold">Down Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.map((item, index) => (
+                                <tr key={item.id} className="border-t border-gray-200 hover:bg-gray-50">
+                                    <td className="px-4 py-4">{index + 1}</td>
+                                    <td className="px-4 py-4">
+                                        <div className="flex items-center space-x-2">
+                                            {getStatusIcon(item.status)}
+                                            <div>
+                                                <p className="text-xl text-blue-500">{item.id}</p>
+                                                <p className="text-sm text-blue-600">{item.name}</p>
+                                                <p className="text-sm text-gray-600">{item.product}</p>
                                             </div>
-                                        </td>
-                                        <td className="px-4 py-4">
-                                            <div className="flex space-x-1">
-                                                {item.statusBars.map((color, i) => (
-                                                    <div
-                                                        key={i}
-                                                        className={`w-8 h-2 ${color === 'green' ? 'bg-green-500' : 'bg-red-500'}`}
-                                                    />
-                                                ))}
-                                            </div>
-                                        </td>
-                                        {['ar', 'pr', 'qr', 'oee'].map((metric) => (
-                                            <td key={metric} className="px-4 py-4">
-                                                <div className="flex justify-center">
-                                                    <div className="relative w-12 h-12">
-                                                        <svg className="w-12 h-12 transform -rotate-90">
-                                                            <circle
-                                                                className="text-gray-200"
-                                                                strokeWidth="2"
-                                                                stroke="currentColor"
-                                                                fill="transparent"
-                                                                r="20"
-                                                                cx="24"
-                                                                cy="24"
-                                                            />
-                                                            <circle
-                                                                className="text-blue-500"
-                                                                strokeWidth="2"
-                                                                strokeDasharray={`${item[metric] * 1.256}, 126`}
-                                                                strokeLinecap="round"
-                                                                stroke="currentColor"
-                                                                fill="transparent"
-                                                                r="20"
-                                                                cx="24"
-                                                                cy="24"
-                                                            />
-                                                        </svg>
-                                                        <div className="absolute inset-0 flex items-center justify-center">
-                                                            <span className="text-sm font-medium">
-                                                                {item[metric].toFixed(1)}
-                                                            </span>
-                                                        </div>
+                                        </div>
+                                    </td>
+                                    {['ar', 'pr', 'qr', 'oee'].map((metric) => (
+                                        <td key={metric} className="px-4 py-4">
+                                            <div className="flex justify-center">
+                                                <div className="relative w-12 h-12">
+                                                    <svg className="w-12 h-12 transform -rotate-90">
+                                                        <circle
+                                                            className="text-gray-200"
+                                                            strokeWidth="2"
+                                                            stroke="currentColor"
+                                                            fill="transparent"
+                                                            r="20"
+                                                            cx="24"
+                                                            cy="24"
+                                                        />
+                                                        <circle
+                                                            className="text-blue-500"
+                                                            strokeWidth="2"
+                                                            strokeDasharray={`${item[metric] * 1.256}, 126`}
+                                                            strokeLinecap="round"
+                                                            stroke="currentColor"
+                                                            fill="transparent"
+                                                            r="20"
+                                                            cx="24"
+                                                            cy="24"
+                                                        />
+                                                    </svg>
+                                                    <div className="absolute inset-0 flex items-center justify-center">
+                                                        <span className="text-sm font-medium">
+                                                            {item[metric].toFixed(1)}
+                                                        </span>
                                                     </div>
                                                 </div>
-                                            </td>
-                                        ))}
-                                        <td className="px-4 py-4 text-sm text-gray-600">{item.runTime}</td>
-                                        <td className="px-4 py-4 text-sm text-gray-600">{item.downTime}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                            </div>
+                                        </td>
+                                    ))}
+                                    <td className="px-4 py-4 text-sm text-gray-600">{item.runTime}</td>
+                                    <td className="px-4 py-4 text-sm text-gray-600">{item.downTime}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             </div>
             {/* </main> */}

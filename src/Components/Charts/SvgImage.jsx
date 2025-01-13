@@ -57,7 +57,7 @@ const SvgImage = ({ data }) => {
     }, [data]);
 
     return (
-        <div className="relative bg-gray-200 rounded-lg shadow-md p-2">
+        <div className="relative flex justify-center items-center p-2">
             {svgContent ? (
                 <div dangerouslySetInnerHTML={{ __html: svgContent }} className='w-full h-auto' />
             ) : (

@@ -42,9 +42,9 @@ const DataTable = ({ data }) => {
                 </button>
             </div>
             <div className="overflow-x-auto">
-                <table className="min-w-full">
+                <table className="min-w-full border">
                     <thead>
-                        <tr className="bg-gray-100">
+                        <tr className="bg-gray-100 border-b">
                             <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Title</th>
                             <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Created Time</th>
                             <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Duration</th>

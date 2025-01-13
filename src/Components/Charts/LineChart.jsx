@@ -10,10 +10,6 @@ const LineChart = ({ data, title, yAxisLabel }) => {
         const chart = echarts.init(chartRef.current);
 
         const option = {
-            // title: {
-            //     text: title,
-            //     left: 'center'
-            // },
             tooltip: {
                 trigger: 'axis'
             },

@@ -104,7 +104,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import { Home, Gauge, Settings, ChevronDown, ChevronLeft, ChevronRight, Flame, BellRing } from 'lucide-react';
+import { Home, Gauge, Settings, ChevronDown, ChevronLeft, ChevronRight, Flame, BellRing, Text } from 'lucide-react';
 
 // Define menu structure
 const MENU_ITEMS = [
@@ -115,26 +115,37 @@ const MENU_ITEMS = [
         icon: Home
     },
     {
-        id: 'dashboards',
-        title: 'Dashboards',
+        id: 'plant',
+        title: 'Plants',
         icon: Gauge,
+        path: '/plant/furnace1',
         subItems: [
-            { id: 'furnace1', title: 'Furnace 1', path: '/dashboard/furnace1', icon: Flame },
-            { id: 'furnace2', title: 'Furnace 2', path: '/dashboard/furnace2', icon: Flame },
-            { id: 'furnace3', title: 'Furnace 3', path: '/dashboard/furnace3', icon: Flame }
+            { id: 'furnace1', title: 'Furnace 1', path: '/plant/furnace1', icon: Flame },
+            { id: 'furnace2', title: 'Furnace 2', path: '/plant/furnace2', icon: Flame },
+            { id: 'furnace3', title: 'Furnace 3', path: '/plant/furnace3', icon: Flame }
         ]
     },
     {
+        id: 'report',
+        title: 'Report',
+        path: '/report',
+        icon: Text
+    },
+    {
         id: 'alarm',
-        title: 'Alarm',
+        title: 'Alarms',
         path: '/alarm',
         icon: BellRing
     },
     {
         id: 'settings',
         title: 'Settings',
-        path: '/settings',
-        icon: Settings
+        path: '/settings/alarms',
+        icon: Settings,
+        subItems: [
+            { id: 'alarm', title: 'Alarm Settings', path: '/settings/alarms', icon: BellRing },
+            { id: 'production', title: 'Production Settings', path: '/settings/production', icon: Text },
+        ]
     }
 ];
 
@@ -145,10 +156,10 @@ const MenuItem = ({ item, isCollapsed, isActive, onClick, isOpen, onToggle, path
         <div>
             <button
                 onClick={() => hasSubItems ? onToggle?.() : onClick(item.path)}
-                className={`w-full flex items-center justify-between p-2 hover:bg-gray-100 rounded-lg
+                className={`w-full flex items-center justify-between p-1 hover:bg-gray-100 rounded-lg
                 ${isActive ? 'bg-gray-100' : ''}`}
             >
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 text-lg">
                     <item.icon className="h-5 w-5" />
                     {!isCollapsed && <span>{item.title}</span>}
                 </div>
@@ -160,12 +171,12 @@ const MenuItem = ({ item, isCollapsed, isActive, onClick, isOpen, onToggle, path
             </button>
 
             {hasSubItems && ((isOpen && !isCollapsed) || isActive) && (
-                <div className={`ml-6 mt-2 space-y-2 ${isCollapsed ? 'ml-0' : ''}`}>
+                <div className={`ml-6 mt-1 text-lg ${isCollapsed ? 'ml-0' : ''}`}>
                     {item.subItems.map((subItem) => (
                         <button
                             key={subItem.id}
                             onClick={() => onClick(subItem.path)}
-                            className={`w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-lg
+                            className={`w-full flex items-center space-x-2 p-1 hover:bg-gray-100 rounded-lg
                 ${pathname === subItem.path ? 'bg-gray-100' : ''}`}
                         >
                             <subItem.icon className="h-5 w-5" />

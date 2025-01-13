@@ -97,6 +97,52 @@ export const getVariableLastValue = async ({
     }
 };
 
+export const getDataApi = async ({
+    include_instanceId = true,
+    include_dataModel = true,
+    include_edgeId = true,
+    asc = false,
+    from,
+    to,
+    limit = 10
+}) => {
+    try {
+        const tenantId = Cookies.get("tenantId");
+        const response = await axiosInstance.get(
+            EndPoints.GET_DATA_API(
+                tenantId,
+                include_instanceId,
+                include_dataModel,
+                include_edgeId,
+                asc,
+                to,
+                from,
+                limit
+            )
+        );
+        console.log("getvalue", response.data)
+        return response.data;
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export const dataValue = async ({
+    limit
+}) => {
+    try {
+        const tenantId = Cookies.get("tenantId");
+        const response = await axiosInstance.get(
+            EndPoints.DATA_VALUE(
+                tenantId, limit
+            )
+        );
+        return response.data;
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
 // Helper function to handle API errors
 export const handleApiError = (error) => {
     const errorMessage =
