@@ -588,8 +588,8 @@ const ReportPage = () => {
 
                                     {isVariableDropdownOpen && (
                                         <div className="absolute z-10 w-full bg-gray-100 border border-gray-400 rounded-md shadow-lg max-h-96 overflow-y-auto">
-                                            <div className="p-2 border-b border-gray-200">
-                                                <label className="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                            <div className="p-1 border-b border-gray-300">
+                                                <label className="flex items-center p-2 hover:bg-gray-300 rounded cursor-pointer">
                                                     <input
                                                         type="checkbox"
                                                         className="form-checkbox h-4 w-4 text-blue-600 rounded"
@@ -607,7 +607,7 @@ const ReportPage = () => {
                                                 {variableOptions.map(variable => (
                                                     <label
                                                         key={variable}
-                                                        className="flex items-center p-2 hover:bg-gray-50 cursor-pointer"
+                                                        className="flex items-center p-2 hover:bg-gray-300 cursor-pointer"
                                                     >
                                                         <input
                                                             type="checkbox"
