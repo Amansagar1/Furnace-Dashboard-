@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect, useRef } from "react";
-import navlogo from "../../Components/Assets/Dashboard1.png";
+import navlogo from "../../Components/Assets/Logo.png";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { decodeToken } from "../../webServices/MgmtPortalAPIController";
+import { decodeToken } from "../../WebServices/ApiControllers";
 import Cookies from "js-cookie";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
-const Navbar = ({ handleSignOut, toggleCollapse }) => {
+const Navbar = ({ handleSignOut, toggleSidebar }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState({});
@@ -24,9 +23,6 @@ const Navbar = ({ handleSignOut, toggleCollapse }) => {
     if (lastName) initials += lastName.charAt(0).toUpperCase();
     return initials || "A";
   };
-
-
-
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -90,8 +86,6 @@ const Navbar = ({ handleSignOut, toggleCollapse }) => {
     }
   };
 
-
-
   const toggleMenu = () => {
     setIsMenuOpen((prev) => {
       if (!prev) setIsDrawerOpen(false);
@@ -106,63 +100,59 @@ const Navbar = ({ handleSignOut, toggleCollapse }) => {
     });
   };
 
-
-
   return (
-    <div className="w-full border-b border-gray-200 relative p-2 bg-white shadow-sm">
-      <div className="flex justify-between items-center px-4">
-   
-        {/* Logo */}
-        <div className="flex items-center gap-2">
-          <Image src={navlogo} alt="Logo" width={140} height={140} />
-         <button  onClick={toggleCollapse}  className="pt-8"> <RxHamburgerMenu /></button>
+    <div className="bg-white shadow-md px-4 py-2 flex items-center justify-between fixed w-full top-0 z-50">
+      {/* Left Section */}
+      <div className="flex items-center space-x-4">
+        <Image src={navlogo} alt="Logo" className="w-48 h-full" />
+        <button
+          onClick={toggleSidebar}
+          className="p-2 hover:bg-gray-100 rounded-lg transition-all duration-200"
+        >
+          <RxHamburgerMenu className="h-6 w-6" />
+        </button>
+        <div className="flex justify-center items-center space-x-2">
+          <span className="text-xl font-semibold">Furnace Monitoring</span>
+        </div>
+      </div>
 
+      {/* Right Section */}
+      <div className="flex gap-5 items-center">
+        <div className="text-md text-red-600 italic px-2 py-1 rounded-lg">
+          {licenseType !== "expired" && licenseType !== "2" ? (
+            <div className=" text-red-600 italic px-2 py-1 rounded-lg text-[12px]">
+              {licenseType === "0"
+                ? "(Demo License not for Production usage)"
+                : licenseType === "1"
+                  ? "(Development License, internal use only)"
+                  : null}
+            </div>
+          ) : licenseType === "expired" ? (
+            <div className="text-[12px]  text-red-600 italic px-2 py-1 rounded-lg">
+              License Expired
+            </div>
+          ) : null}
         </div>
 
-        {/* Title */}
-        {/* <h1 className="font-bold lg:text-xl md:text-md text-[12px] text-sky-600">
-          {title}
-        </h1> */}
+        {/* Notifications */}
+        <div
+          onClick={toggleDrawer}
+          className="relative cursor-pointer hover:scale-105 transition"
+        >
+          <IoNotificationsOutline size={24} className="text-white bg-sky-500 w-10 h-10 rounded-full p-2 hover:bg-sky-600" />
+          {notifications.length > 0 && (
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+              {notifications.length}
+            </span>
+          )}
+        </div>
 
-        {/* Right Section */}
-        <div className="flex gap-5 items-center">
-          <div className="text-md text-red-600 italic px-2 py-1 rounded-lg">
-          {licenseType !== "expired" && licenseType !== "2" ? (
-  <div className=" text-red-600 italic px-2 py-1 rounded-lg text-[12px]">
-    {licenseType === "0"
-      ? "(Demo License not for Production usage)"
-      : licenseType === "1"
-      ? "(Development License, internal use only)"
-      : null}
-  </div>
-) : licenseType === "expired" ? (
-  <div className="text-[12px]  text-red-600 italic px-2 py-1 rounded-lg">
-    License Expired
-  </div>
-) : null}
-          </div>
-
-          {/* Notifications */}
-          <div
-            onClick={toggleDrawer}
-            className="relative cursor-pointer hover:scale-105 transition"
-          >
-            <IoNotificationsOutline size={24} className="text-white bg-sky-500 w-10 h-10 rounded-full p-2 hover:bg-sky-600" />
-            {notifications.length > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                {notifications.length}
-              </span>
-            )}
-          </div>
-
-
-          {/* User Menu */}
-          <div
-            onClick={toggleMenu}
-            className="bg-sky-500 text-white rounded-full w-10 h-10 flex items-center justify-center cursor-pointer hover:scale-105 transition"
-          >
-            <span className="text-sm">{getInitials(user.firstName, user.lastName)}</span>
-          </div>
+        {/* User Menu */}
+        <div
+          onClick={toggleMenu}
+          className="bg-sky-500 text-white rounded-full w-10 h-10 flex items-center justify-center cursor-pointer hover:scale-105 transition"
+        >
+          <span className="text-sm">{getInitials(user.firstName, user.lastName)}</span>
         </div>
       </div>
       {/* User Card */}
@@ -222,7 +212,6 @@ const Navbar = ({ handleSignOut, toggleCollapse }) => {
           ) : (
             <p className="text-gray-500">No notifications</p>
           )}
-
         </div>
       )}
     </div>

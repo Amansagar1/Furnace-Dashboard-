@@ -516,7 +516,7 @@ const ReportPage = () => {
                     tenantId,
                     ...filters,
                     variable,
-                    limit: 1000
+                    limit: 10000
                 })
             );
 
@@ -542,6 +542,8 @@ const ReportPage = () => {
         )
     } : null;
 
+
+
     return (
         <div className="min-h-screen bg-gray-50">
             <div className="bg-white shadow-lg rounded-lg">
@@ -564,8 +566,10 @@ const ReportPage = () => {
                                     onChange={(e) => setFilters(prev => ({ ...prev, instanceId: e.target.value }))}
                                 >
                                     <option value="">Select instanceId</option>
-                                    <option value="04a0a702-98c4-4fe6-a503-bb87e3a8bffc">04a0a702-98c4-4fe6-a503-bb87e3a8bffc</option>
-                                    <option value="40ce6095-84c2-49a5-b5aa-c2f37ebdd40c">40ce6095-84c2-49a5-b5aa-c2f37ebdd40c</option>
+                                    <option value="40ce6095-84c2-49a5-b5aa-c2f37ebdd40c">Furnace 1</option>
+                                    <option value="047c3f09-2be1-4d39-bcd4-f2ac601d5ced">Furnace 2</option>
+                                    <option value="7e75bcf7-67c8-40db-a0fe-aac0b0470fa2">Furnace 3</option>
+                                    <option value="2eb825bd-b26c-4dc6-90fb-9b8e25bd6418">Furnace 4</option>
                                 </select>
                             </div>
 
@@ -720,27 +724,27 @@ const ReportPage = () => {
                     {currentPageData && (
                         <div className="mt-6 overflow-x-auto">
                             <div className="inline-block min-w-full align-middle">
-                                <div className="overflow-hidden border border-gray-200 rounded-lg">
-                                    <table className="min-w-full divide-y divide-gray-200">
-                                        <thead className="bg-gray-100">
+                                <div className="overflow-hidden border border-gray-400">
+                                    <table className="min-w-full divide-y divide-gray-400">
+                                        <thead className="bg-gray-200">
                                             <tr>
                                                 {currentPageData.headers.map((header, index) => (
                                                     <th
                                                         key={index}
-                                                        className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap"
+                                                        className="px-6 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border-r border-gray-400 whitespace-nowrap"
                                                     >
                                                         {header}
                                                     </th>
                                                 ))}
                                             </tr>
                                         </thead>
-                                        <tbody className="bg-white divide-y divide-gray-200">
+                                        <tbody className="bg-white divide-y divide-gray-400">
                                             {currentPageData.rows.map((row, rowIndex) => (
-                                                <tr key={rowIndex} className="hover:bg-gray-50">
+                                                <tr key={rowIndex} className="hover:bg-gray-50 ">
                                                     {row.map((cell, cellIndex) => (
                                                         <td
                                                             key={cellIndex}
-                                                            className="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+                                                            className="px-6 py-2 whitespace-nowrap font-medium text-xs text-black border-r border-gray-400"
                                                         >
                                                             {typeof cell === 'number' ? cell.toFixed(2) : cell}
                                                         </td>
@@ -756,7 +760,7 @@ const ReportPage = () => {
 
                     {/* Pagination */}
                     {responseData && responseData.rows.length > 0 && (
-                        <div className="mt-4">
+                        <div className="mt-1">
                             <Pagination
                                 currentPage={currentPage}
                                 totalPages={totalPages}

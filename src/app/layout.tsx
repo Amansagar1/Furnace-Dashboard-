@@ -39,12 +39,62 @@
 // "use client";
 // import { Inter } from "next/font/google";
 // import "./globals.css";
-// import { useState, useEffect } from "react";
+// import { useState, createContext, useContext } from "react";
 // import { useRouter, usePathname } from "next/navigation";
 // import SessionExpired from "./sessionexpired/page";
 // import Cookies from "js-cookie";
+// import Navbar from '@/Components/Navigation/Navbar';
+// import Sidebar from '@/Components/Sidebar/Sidebar';
 
 // const inter = Inter({ subsets: ["latin"] });
+
+// // Create context for sidebar state
+// export const SidebarContext = createContext();
+
+// // Create a wrapper component for the main content
+// const MainContentWrapper = ({ children }) => {
+//   const { isSidebarOpen, isCollapsed } = useContext(SidebarContext);
+  
+//   return (
+//     <main className={`pt-16 transition-all duration-300 
+//       ${isSidebarOpen
+//         ? (isCollapsed ? 'ml-16' : 'ml-64')
+//         : 'ml-0'}`}>
+//       {children}
+//     </main>
+//   );
+// };
+
+// // Create a layout wrapper that includes Navbar and Sidebar
+// const LayoutWrapper = ({ children }) => {
+//   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+//   const [isCollapsed, setIsCollapsed] = useState(false);
+//   const pathname = usePathname();
+
+//   const handleCollapse = () => {
+//     setIsCollapsed(!isCollapsed);
+//   };
+
+//   const toggleSidebar = () => {
+//     setIsSidebarOpen(!isSidebarOpen);
+//   };
+
+//   return (
+//     <SidebarContext.Provider value={{ isSidebarOpen, isCollapsed }}>
+//       <div className="min-h-screen bg-gray-50">
+//         <Navbar toggleSidebar={toggleSidebar} />
+//         <Sidebar
+//           isOpen={isSidebarOpen}
+//           isCollapsed={isCollapsed}
+//           handleCollapse={handleCollapse}
+//         />
+//         <MainContentWrapper>
+//           {children}
+//         </MainContentWrapper>
+//       </div>
+//     </SidebarContext.Provider>
+//   );
+// };
 
 // export default function RootLayout({
 //   children,
@@ -52,8 +102,7 @@
 //   children: React.ReactNode;
 // }>) {
 //   const [isLoggedIn, setIsLoggedIn] = useState(false);
-//   const [sessionExpired, setSessionExpired] = useState<boolean>(false);
-
+//   const [sessionExpired, setSessionExpired] = useState(false);
 //   const router = useRouter();
 //   const pathname = usePathname();
 
@@ -61,68 +110,10 @@
 //     if (typeof window !== 'undefined') {
 //       return `${window.location.protocol}//${window.location.host}/`;
 //     }
-//     return ''; 
+//     return '';
 //   };
-  
+
 //   const BASE_URL = getBaseUrl();
-
-//   useEffect(() => {
-//     if (pathname === `${BASE_URL}login` || pathname === `${BASE_URL}sessionexpierd`) {
-//       return;
-//     }
-
-//     // Store the current pathname in cookies
-//     Cookies.set("lastVisitedUrl", pathname, { path: "/" });
-
-//     const token = Cookies.get("token");
-//     const tenantId = Cookies.get("tenantId");
-
-//     if (token && tenantId) {
-//       const isTokenValid = validateToken(token);
-//       if (isTokenValid) {
-//         setIsLoggedIn(true);
-//         setSessionExpired(false);
-//       } else {
-//         setSessionExpired(true);
-//         redirectToSessionExpired();
-//       }
-//     } else {
-//       setSessionExpired(true);
-//       redirectToSessionExpired();
-//     }
-//   }, [router, pathname]);
-
-//   const validateToken = (token: string) => {
-//     return true; 
-//   };
-
-//   const handleSignOut = () => {
-//     Cookies.remove("token");
-//     Cookies.remove("tenantId");
-//     Cookies.remove("lastVisitedUrl");
-//     setIsLoggedIn(false);
-//     router.push(`${BASE_URL}login`);
-//   };
-
-//   const redirectToSessionExpired = () => {
-//     router.push(`${BASE_URL}sessionexpierd`);
-//   };
-
-//   const redirectToLastVisitedUrl = () => {
-//     const lastVisitedUrl = Cookies.get("lastVisitedUrl");
-//     if (lastVisitedUrl && lastVisitedUrl !== `${BASE_URL}login` && lastVisitedUrl !== `${BASE_URL}sessionexpierd`) {
-//       router.push(lastVisitedUrl);
-//     } else {
-//       router.push(`${BASE_URL}`);
-//     }
-//   };
-
-//   useEffect(() => {
-//     // After session expired, redirect to the stored URL upon login
-//     if (isLoggedIn && sessionExpired) {
-//       redirectToLastVisitedUrl();
-//     }
-//   }, [isLoggedIn, sessionExpired]);
 
 //   const isAuthPage = pathname === `${BASE_URL}login` || pathname === `${BASE_URL}sessionexpierd`;
 
@@ -139,7 +130,13 @@
 //   return (
 //     <html lang="en">
 //       <body className={inter.className}>
-//         {children}
+//         {isAuthPage ? (
+//           children
+//         ) : (
+//           <LayoutWrapper>
+//             {children}
+//           </LayoutWrapper>
+//         )}
 //       </body>
 //     </html>
 //   );
@@ -147,39 +144,37 @@
 
 
 "use client";
-import { Inter } from "next/font/google";
+import React, { useState, useEffect } from "react";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { useState, createContext, useContext } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import SessionExpired from "./sessionexpired/page";
 import Cookies from "js-cookie";
-import Navbar from '@/Components/Header/Navbar';
+import Navbar from '@/Components/Navigation/Navbar';
 import Sidebar from '@/Components/Sidebar/Sidebar';
 
-const inter = Inter({ subsets: ["latin"] });
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
 
-// Create context for sidebar state
-export const SidebarContext = createContext();
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
-// Create a wrapper component for the main content
-const MainContentWrapper = ({ children }) => {
-  const { isSidebarOpen, isCollapsed } = useContext(SidebarContext);
-  
-  return (
-    <main className={`pt-16 transition-all duration-300 
-      ${isSidebarOpen
-        ? (isCollapsed ? 'ml-16' : 'ml-64')
-        : 'ml-0'}`}>
-      {children}
-    </main>
-  );
-};
-
-// Create a layout wrapper that includes Navbar and Sidebar
-const LayoutWrapper = ({ children }) => {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const pathname = usePathname();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [sessionExpired, setSessionExpired] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -189,34 +184,55 @@ const LayoutWrapper = ({ children }) => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  return (
-    <SidebarContext.Provider value={{ isSidebarOpen, isCollapsed }}>
-      <div className="min-h-screen bg-gray-50">
-        <Navbar toggleSidebar={toggleSidebar} />
-        <Sidebar
-          isOpen={isSidebarOpen}
-          isCollapsed={isCollapsed}
-          handleCollapse={handleCollapse}
-          currentPath={pathname}
-        />
-        <MainContentWrapper>
-          {children}
-        </MainContentWrapper>
-      </div>
-    </SidebarContext.Provider>
-  );
-};
+  // Token validation function
+  const validateToken = (token: string) => {
+    // Add your token validation logic here
+    return true; // Placeholder return
+  };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [sessionExpired, setSessionExpired] = useState(false);
-  const router = useRouter();
-  const pathname = usePathname();
+  const handleSignOut = () => {
+    // Remove all auth-related cookies
+    Cookies.remove('token');
+    Cookies.remove('tenantId');
+    Cookies.remove('licenseType');
+    Cookies.remove('licenseEndDate');
+    
+    // Update auth states
+    setIsLoggedIn(false);
+    setSessionExpired(true);
+    
+    // Redirect to session expired page
+    router.push('/sessionexpired');
+  };
 
+  useEffect(() => {
+    if (pathname === "/login" || pathname === "/sessionexpired") {
+      setLoading(false);
+      return;
+    }
+
+    // Check for token and tenant ID
+    const token = Cookies.get("token");
+    const tenantId = Cookies.get("tenantId");
+
+    if (token && tenantId) {
+      const isTokenValid = validateToken(token);
+      if (isTokenValid) {
+        setIsLoggedIn(true);
+        setSessionExpired(false);
+      } else {
+        setSessionExpired(true);
+        handleSignOut();
+      }
+    } else {
+      setSessionExpired(true);
+      handleSignOut();
+    }
+
+    setLoading(false);
+  }, [pathname]);
+
+  // Base URL helper
   const getBaseUrl = () => {
     if (typeof window !== 'undefined') {
       return `${window.location.protocol}//${window.location.host}/`;
@@ -225,15 +241,26 @@ export default function RootLayout({
   };
 
   const BASE_URL = getBaseUrl();
+  const isAuthPage = pathname === `${BASE_URL}login` || pathname === `${BASE_URL}sessionexpired`;
 
-  // ... (keep existing authentication logic)
+  // Loading state
+  if (loading) {
+    return (
+      <html lang="en">
+        <body className={` ${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <div className="flex justify-center items-center h-screen">
+            <p>Loading...</p>
+          </div>
+        </body>
+      </html>
+    );
+  }
 
-  const isAuthPage = pathname === `${BASE_URL}login` || pathname === `${BASE_URL}sessionexpierd`;
-
+  // Session expired state
   if (sessionExpired && !isAuthPage) {
     return (
       <html lang="en">
-        <body className={inter.className}>
+        <body className={` ${geistSans.variable} ${geistMono.variable} antialiased`}>
           <SessionExpired />
         </body>
       </html>
@@ -242,13 +269,29 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={` ${geistSans.variable} ${geistMono.variable} antialiased`}>
         {isAuthPage ? (
           children
         ) : (
-          <LayoutWrapper>
-            {children}
-          </LayoutWrapper>
+          <div className="min-h-screen bg-gray-50">
+            <Navbar 
+              toggleSidebar={toggleSidebar} 
+              handleSignOut={handleSignOut} 
+            />
+            <div className="flex">
+              <Sidebar
+                isOpen={isSidebarOpen}
+                isCollapsed={isCollapsed}
+                handleCollapse={handleCollapse}
+              />
+              <main className={`pt-16 transition-all duration-300 w-full
+                ${isSidebarOpen
+                  ? (isCollapsed ? 'ml-16' : 'ml-64')
+                  : 'ml-0'}`}>
+                {children}
+              </main>
+            </div>
+          </div>
         )}
       </body>
     </html>

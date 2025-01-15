@@ -157,16 +157,6 @@ const HomePage = () => {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* <Navbar toggleSidebar={toggleSidebar} />
-            <Sidebar
-                isOpen={isSidebarOpen}
-                isCollapsed={isCollapsed}
-                handleCollapse={handleCollapse}
-            /> */}
-            {/* <main className={`pt-16 transition-all duration-300 
-            ${isSidebarOpen
-                    ? (isCollapsed ? 'ml-16' : 'ml-64')
-                    : 'ml-0'}`}> */}
             <div className="p-6">
 
                 {/* Status Indicators */}
