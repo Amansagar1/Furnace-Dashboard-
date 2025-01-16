@@ -18,6 +18,14 @@ const getBaseUrl = () => {
 const BASE_URL = process.env.NEXT_PUBLIC_PROD_BASE_URL;
 
 const EndPoints = {
+    // Login Api
+    LOGIN_API: (tenantId) =>
+        BASE_URL + `adminservice/api/v1/LoginService/Login?tenantId=${tenantId}`,
+
+
+    Get_All_License: (tenantId) =>
+        BASE_URL + `/mgmtportalapi/api/v1/MgmtPortalApi/GetLicenseInformation?tenantId=${tenantId}`,
+
     GET_HISTORIAL_DATA: (tenantId, instanceId, variable, to, from, frequency, limit) =>
         BASE_URL + `/dataapi/api/v1/DataApi/GetHistorialData?tenantId=${tenantId}&instanceId=${instanceId}&variable=${variable}&to=${to}&from=${from}&frequency=${frequency}&limit=${limit}`,
 

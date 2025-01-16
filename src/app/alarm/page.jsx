@@ -692,7 +692,7 @@ Low: ${day.low}`}
                             </tr>
                         ) : (
                             alarms.map((alarm, index) => (
-                                <tr key={index} className={`divide-x divide-gray-400 ${alarm.isactive ? 'bg-green-300 hover:bg-green-400' : 'bg-red-400 hover:bg-red-500'}`}>
+                                <tr key={index} className={`divide-x divide-gray-400 ${alarm.isactive ? 'bg-red-400 hover:bg-red-500' : 'bg-green-300 hover:bg-green-400'}`}>
                                     <td className="px-4 py-2 text-xs text-gray-900">{formatDateTime(alarm.timestamp)}</td>
                                     <td className="px-4 py-2 text-xs text-gray-900">{alarm.instanceid}</td>
                                     <td className="px-4 py-2 text-xs text-gray-900">{alarm.alarmtypeid}</td>

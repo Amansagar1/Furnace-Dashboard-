@@ -104,20 +104,20 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import { Home, Gauge, Settings, ChevronDown, ChevronLeft, ChevronRight, Flame, BellRing, Text } from 'lucide-react';
+import { PanelsTopLeft, LayoutDashboard, Settings, ChevronDown, ChevronLeft, ChevronRight, Flame, BellRing, Text } from 'lucide-react';
 
 // Define menu structure
 const MENU_ITEMS = [
     {
-        id: 'home',
-        title: 'Home',
-        path: '/home',
-        icon: Home
+        id: 'overview',
+        title: 'Overview',
+        path: '/overview',
+        icon: PanelsTopLeft
     },
     {
         id: 'plant',
         title: 'Plants',
-        icon: Gauge,
+        icon: LayoutDashboard,
         path: '/plant/furnace1',
         subItems: [
             { id: 'furnace1', title: 'Furnace 1', path: '/plant/furnace1', icon: Flame },

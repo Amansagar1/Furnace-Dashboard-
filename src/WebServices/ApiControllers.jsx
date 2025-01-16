@@ -134,3 +134,70 @@ export const handleApiError = (error) => {
     console.log("Error: " + errorMessage);
     throw { statusCode: error.response?.status, errorMessage };
 };
+
+const setCookieWithExpiration = (name, value, expiresDays) => {
+    Cookies.set(name, value, { expires: expiresDays, secure: true, sameSite: 'strict' });
+};
+
+// Login API
+export const loginApi = async (username, password, tenantId) => {
+    try {
+        if (!tenantId) {
+            throw { statusCode: 400, message: "Tenant ID is undefined" };
+        }
+
+        const loginUrl = EndPoints.LOGIN_API(tenantId);
+        console.log('Login API URL:', loginUrl);
+
+        const response = await axiosInstance.post(loginUrl, {
+            userName: username,
+            password: password,
+        });
+
+        if (response?.data?.token) {
+            setCookieWithExpiration('token', response.data.token, 7);
+            setCookieWithExpiration('tenantId', tenantId, 7);
+
+            // Fetch and store license details after login
+            await getAllLicense();
+        } else {
+            throw { statusCode: 401, message: "Login failed, invalid credentials." };
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error('API Error for loginApi => ', error);
+        throw { statusCode: error.response?.status || 500, message: error.message || 'Something went wrong' };
+    }
+};
+
+// License API with License Type and End Date handling
+export const getAllLicense = () => {
+    const tenantId = Cookies.get("tenantId");
+
+    return axiosInstance
+        .get(EndPoints.Get_All_License(tenantId))
+        .then((response) => {
+            const { licenseType, endDate } = response.data;
+            if (licenseType) {
+                setCookieWithExpiration("licenseType", licenseType, 7);
+            }
+            if (endDate) {
+                setCookieWithExpiration("licenseEndDate", endDate, 7);
+            }
+            return { result: response.data };
+        })
+        .catch(handleApiError);
+};
+
+// Function to Display License Bar if Condition 012
+export const displayLicenseBar = () => {
+    const licenseType = Cookies.get("licenseType");
+    const licenseEndDate = Cookies.get("licenseEndDate");
+
+    if (licenseType === "012") {
+        return `License Type: ${licenseType} | Expires on: ${licenseEndDate}`;
+    } else {
+        return null;
+    }
+};
