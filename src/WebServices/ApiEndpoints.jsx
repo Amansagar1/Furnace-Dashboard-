@@ -24,11 +24,8 @@ const EndPoints = {
     GET_VARIABLE_LAST_VALUE: (tenantId, instanceId, dataModel, variableName) =>
         BASE_URL + `/dataapi/api/v1/DataApi/GetVariableLastValue?tenantId=${tenantId}&instanceId=${instanceId}&dataModel=${dataModel}&variableName=${variableName}`,
 
-    DATA_VALUE: (tenantId, limit) =>
-        BASE_URL + `${SUBURL}GetDataValue?tenantId=${tenantId}&limit=${limit}`,
-
-    GET_DATA_API: (tenantId, include_instanceId, include_dataModel, include_edgeId, asc, from, to, limit) =>
-        BASE_URL + `/dataapi/api/v1/DataApi/GetValues?tenantId=${tenantId}&include_instanceId=${include_instanceId}&include_dataModel=${include_dataModel}&include_edgeId=${include_edgeId}&asc=${asc}&from=${from}&to=${to}&limit=${limit}`,
+    GET_ALARMS_DATA: (tenantId, instanceId, limit) =>
+        BASE_URL + `/dataapi/api/v1/AlarmApi/GetAlarms?tenantId=${tenantId}&instanceId=${instanceId}&limit=${limit}`,
 };
 
 Object.freeze(EndPoints);

@@ -30,7 +30,6 @@ axiosInstance.interceptors.response.use(
     }
 );
 
-
 export const getHistorialData = async ({
     instanceId,
     variable,
@@ -58,24 +57,6 @@ export const getHistorialData = async ({
     }
 };
 
-export const decodeToken = (token) => {
-    try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(
-            atob(base64)
-                .split('')
-                .map((c) => `%${('00' + c.charCodeAt(0).toString(16)).slice(-2)}`)
-                .join('')
-        );
-
-        return JSON.parse(jsonPayload);
-    } catch (e) {
-        console.error('Invalid token', e);
-        return null;
-    }
-};
-
 export const getVariableLastValue = async ({
     instanceId,
     dataModel,
@@ -97,49 +78,40 @@ export const getVariableLastValue = async ({
     }
 };
 
-export const getDataApi = async ({
-    include_instanceId = true,
-    include_dataModel = true,
-    include_edgeId = true,
-    asc = false,
-    from,
-    to,
-    limit = 10
+export const getAlarmsData = async ({
+    instanceId,
+    limit = 1000
 }) => {
     try {
         const tenantId = Cookies.get("tenantId");
         const response = await axiosInstance.get(
-            EndPoints.GET_DATA_API(
+            EndPoints.GET_ALARMS_DATA(
                 tenantId,
-                include_instanceId,
-                include_dataModel,
-                include_edgeId,
-                asc,
-                to,
-                from,
+                instanceId,
                 limit
             )
         );
-        console.log("getvalue", response.data)
         return response.data;
     } catch (error) {
         return handleApiError(error);
     }
 };
 
-export const dataValue = async ({
-    limit
-}) => {
+export const decodeToken = (token) => {
     try {
-        const tenantId = Cookies.get("tenantId");
-        const response = await axiosInstance.get(
-            EndPoints.DATA_VALUE(
-                tenantId, limit
-            )
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+            atob(base64)
+                .split('')
+                .map((c) => `%${('00' + c.charCodeAt(0).toString(16)).slice(-2)}`)
+                .join('')
         );
-        return response.data;
-    } catch (error) {
-        return handleApiError(error);
+
+        return JSON.parse(jsonPayload);
+    } catch (e) {
+        console.error('Invalid token', e);
+        return null;
     }
 };
 

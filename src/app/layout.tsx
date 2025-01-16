@@ -273,7 +273,7 @@ export default function RootLayout({
         {isAuthPage ? (
           children
         ) : (
-          <div className="min-h-screen bg-gray-50">
+          <div className="h-screen ">
             <Navbar 
               toggleSidebar={toggleSidebar} 
               handleSignOut={handleSignOut} 

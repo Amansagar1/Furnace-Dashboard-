@@ -725,13 +725,13 @@ const ReportPage = () => {
                         <div className="mt-6 overflow-x-auto">
                             <div className="inline-block min-w-full align-middle">
                                 <div className="overflow-hidden border border-gray-400">
-                                    <table className="min-w-full divide-y divide-gray-400">
+                                    <table className="min-w-screen divide-y divide-gray-400">
                                         <thead className="bg-gray-200">
-                                            <tr>
+                                            <tr className='divide-x divide-gray-400'>
                                                 {currentPageData.headers.map((header, index) => (
                                                     <th
                                                         key={index}
-                                                        className="px-6 py-2 text-left text-xs font-bold text-black uppercase tracking-wider border-r border-gray-400 whitespace-nowrap"
+                                                        className="px-6 py-2 text-left text-xs font-bold text-black uppercase tracking-wider whitespace-nowrap"
                                                     >
                                                         {header}
                                                     </th>
@@ -740,11 +740,11 @@ const ReportPage = () => {
                                         </thead>
                                         <tbody className="bg-white divide-y divide-gray-400">
                                             {currentPageData.rows.map((row, rowIndex) => (
-                                                <tr key={rowIndex} className="hover:bg-gray-50 ">
+                                                <tr key={rowIndex} className="hover:bg-gray-100 divide-x divide-gray-400 ">
                                                     {row.map((cell, cellIndex) => (
                                                         <td
                                                             key={cellIndex}
-                                                            className="px-6 py-2 whitespace-nowrap font-medium text-xs text-black border-r border-gray-400"
+                                                            className="px-6 py-2 whitespace-nowrap font-medium text-xs text-black"
                                                         >
                                                             {typeof cell === 'number' ? cell.toFixed(2) : cell}
                                                         </td>
