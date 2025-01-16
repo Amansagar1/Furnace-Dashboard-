@@ -97,6 +97,17 @@ export const getAlarmsData = async ({
     }
 };
 
+export const getDataModelSource = async () => {
+    try {
+        const response = await axiosInstance.get(EndPoints.GET_ALL_DATA_SOURCES(TENANT_ID));
+        console.log("API Response for getDataModelSource => ", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("API Error for getDataModelSource => ", error);
+        return handleApiError(error);
+    }
+};
+
 export const decodeToken = (token) => {
     try {
         const base64Url = token.split('.')[1];

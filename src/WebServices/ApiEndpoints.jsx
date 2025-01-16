@@ -26,6 +26,9 @@ const EndPoints = {
 
     GET_ALARMS_DATA: (tenantId, instanceId, limit) =>
         BASE_URL + `/dataapi/api/v1/AlarmApi/GetAlarms?tenantId=${tenantId}&instanceId=${instanceId}&limit=${limit}`,
+
+    GET_ALL_DATA_SOURCES: (tenantId) =>
+        BASE_URL + `enggapi/api/v1/DataSourceApi/GetAllDataSources?tenantId=${tenantId}`,
 };
 
 Object.freeze(EndPoints);
