@@ -461,6 +461,14 @@ import { getAlarmsData } from '../../WebServices/ApiControllers';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+// Mapping of instance IDs to furnace names
+const INSTANCE_MAPPING = {
+    '40ce6095-84c2-49a5-b5aa-c2f37ebdd40c': 'Furnace 1',
+    '047c3f09-2be1-4d39-bcd4-f2ac601d5ced': 'Furnace 2',
+    '7e75bcf7-67c8-40db-a0fe-aac0b0470fa2': 'Furnace 3',
+    '2eb825bd-b26c-4dc6-90fb-9b8e25bd6418': 'Furnace 4'
+};
+
 const AlarmPage = () => {
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
     const [alarms, setAlarms] = useState([]);
@@ -574,7 +582,7 @@ const AlarmPage = () => {
     };
 
     const tableHeaders = [
-        { key: 'timestamp', label: 'Timestamp' },
+        // { key: 'timestamp', label: 'Timestamp' },
         { key: 'instanceid', label: 'Instance ID' },
         { key: 'alarmtypeid', label: 'Alarm Type ID' },
         { key: 'alarmlabel', label: 'Alarm Label' },
@@ -583,8 +591,25 @@ const AlarmPage = () => {
         { key: 'starttime', label: 'Start Time' },
         { key: 'endtime', label: 'End Time' },
         { key: 'serverity', label: 'Severity' },
-        { key: 'uuid', label: 'Alarm InstanceId' }
+        // { key: 'uuid', label: 'Alarm InstanceId' }
     ];
+
+    const exportToCSV = () => {
+        const headers = tableHeaders.map((header) => header.label).join(',');
+        const rows = alarms.map(alarm =>
+            tableHeaders.map(header => `"${alarm[header.key] || ''}"`).join(',')
+        );
+        const csvContent = [headers, ...rows].join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `alarms_data.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
 
     return (
         <div className="p-4 bg-gray-50 overflow-auto">
@@ -656,13 +681,18 @@ Low: ${day.low}`}
                         value={selectedInstance}
                         onChange={(e) => setSelectedInstance(e.target.value)}
                     >
-                        <option value="40ce6095-84c2-49a5-b5aa-c2f37ebdd40c">Furnace 1</option>
+                        {/* <option value="40ce6095-84c2-49a5-b5aa-c2f37ebdd40c">Furnace 1</option>
                         <option value="047c3f09-2be1-4d39-bcd4-f2ac601d5ced">Furnace 2</option>
                         <option value="7e75bcf7-67c8-40db-a0fe-aac0b0470fa2">Furnace 3</option>
-                        <option value="2eb825bd-b26c-4dc6-90fb-9b8e25bd6418">Furnace 4</option>
+                        <option value="2eb825bd-b26c-4dc6-90fb-9b8e25bd6418">Furnace 4</option> */}
+                        {Object.entries(INSTANCE_MAPPING).map(([id, name]) => (
+                            <option key={id} value={id}>
+                                {name}
+                            </option>
+                        ))}
                     </select>
                 </div>
-                <button className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors">
+                <button onClick={exportToCSV} className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors">
                     <Download size={20} />
                     Export
                 </button>
@@ -692,9 +722,10 @@ Low: ${day.low}`}
                             </tr>
                         ) : (
                             alarms.map((alarm, index) => (
-                                <tr key={index} className={`divide-x divide-gray-400 ${alarm.isactive ? 'bg-red-400 hover:bg-red-500' : 'bg-green-300 hover:bg-green-400'}`}>
-                                    <td className="px-4 py-2 text-xs text-gray-900">{formatDateTime(alarm.timestamp)}</td>
-                                    <td className="px-4 py-2 text-xs text-gray-900">{alarm.instanceid}</td>
+                                <tr key={index} className={`divide-x divide-gray-400 ${alarm.isactive ? 'bg-red-300 hover:bg-red-400' : 'bg-green-100 hover:bg-green-300'}`}>
+                                    {/* <td className="px-4 py-2 text-xs text-gray-900">{formatDateTime(alarm.timestamp)}</td> */}
+                                    {/* <td className="px-4 py-2 text-xs text-gray-900">{alarm.timestamp}</td> */}
+                                    <td className="px-4 py-2 text-xs text-gray-900">{INSTANCE_MAPPING[alarm.instanceid] || alarm.instanceid}</td>
                                     <td className="px-4 py-2 text-xs text-gray-900">{alarm.alarmtypeid}</td>
                                     <td className="px-4 py-2 text-xs text-gray-900">{alarm.alarmlabel}</td>
                                     <td className="px-4 py-2 text-xs text-gray-900">{alarm.isactive ? 'True' : 'False'}</td>
@@ -702,7 +733,7 @@ Low: ${day.low}`}
                                     <td className="px-4 py-2 text-xs text-gray-900">{formatDateTime(alarm.starttime)}</td>
                                     <td className="px-4 py-2 text-xs text-gray-900">{formatDateTime(alarm.endtime)}</td>
                                     <td className="px-4 py-2 text-xs text-gray-900">{alarm.serverity}</td>
-                                    <td className="px-4 py-2 text-xs text-gray-900">{alarm.uuid}</td>
+                                    {/* <td className="px-4 py-2 text-xs text-gray-900">{alarm.uuid}</td> */}
                                 </tr>
                             ))
                         )}

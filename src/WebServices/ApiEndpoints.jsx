@@ -22,7 +22,6 @@ const EndPoints = {
     LOGIN_API: (tenantId) =>
         BASE_URL + `adminservice/api/v1/LoginService/Login?tenantId=${tenantId}`,
 
-
     Get_All_License: (tenantId) =>
         BASE_URL + `/mgmtportalapi/api/v1/MgmtPortalApi/GetLicenseInformation?tenantId=${tenantId}`,
 
@@ -35,8 +34,8 @@ const EndPoints = {
     GET_ALARMS_DATA: (tenantId, instanceId, limit) =>
         BASE_URL + `/dataapi/api/v1/AlarmApi/GetAlarms?tenantId=${tenantId}&instanceId=${instanceId}&limit=${limit}`,
 
-    GET_ALL_DATA_SOURCES: (tenantId) =>
-        BASE_URL + `enggapi/api/v1/DataSourceApi/GetAllDataSources?tenantId=${tenantId}`,
+    GET_ALL_DATA_MODELS: (tenantId) =>
+        BASE_URL + `/mgmtportalapi/api/v1/MgmtPortalApi/GetRegisteredDataModels?tenantId=${tenantId}`,
 };
 
 Object.freeze(EndPoints);

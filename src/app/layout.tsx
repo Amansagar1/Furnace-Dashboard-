@@ -421,7 +421,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="flex w-full">
+        <div className="flex w-screen">
           {isAuthPage ? (
             pathname === "/login" ? (
               <Login onLogin={handleLogin} />
@@ -429,7 +429,7 @@ export default function RootLayout({
               <SessionExpired />
             )
           ) : isLoggedIn ? (
-            <div className="h-screen w-full">
+            <div className="h-screen w-screen">
               <Navbar 
                 toggleSidebar={toggleSidebar} 
                 handleSignOut={handleSignOut}
@@ -440,7 +440,7 @@ export default function RootLayout({
                   isCollapsed={isCollapsed}
                   handleCollapse={handleCollapse}
                 />
-                <main className={`pt-16 transition-all duration-300 w-full
+                <main className={`pt-16 transition-all duration-300 w-screen
                   ${isSidebarOpen
                     ? (isCollapsed ? 'ml-16' : 'ml-64')
                     : 'ml-0'}`}>

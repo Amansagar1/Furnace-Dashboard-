@@ -122,7 +122,8 @@ const MENU_ITEMS = [
         subItems: [
             { id: 'furnace1', title: 'Furnace 1', path: '/plant/furnace1', icon: Flame },
             { id: 'furnace2', title: 'Furnace 2', path: '/plant/furnace2', icon: Flame },
-            { id: 'furnace3', title: 'Furnace 3', path: '/plant/furnace3', icon: Flame }
+            { id: 'furnace3', title: 'Furnace 3', path: '/plant/furnace3', icon: Flame },
+            { id: 'furnace4', title: 'Furnace 4', path: '/plant/furnace4', icon: Flame }
         ]
     },
     {

@@ -97,13 +97,14 @@ export const getAlarmsData = async ({
     }
 };
 
-export const getDataModelSource = async () => {
+export const getAllDataModels = async () => {
     try {
-        const response = await axiosInstance.get(EndPoints.GET_ALL_DATA_SOURCES(TENANT_ID));
-        console.log("API Response for getDataModelSource => ", response.data);
+        const tenantId = Cookies.get("tenantId");
+        const response = await axiosInstance.get(EndPoints.GET_ALL_DATA_MODELS(tenantId));
+        console.log("API Response for getAllDataModels => ", response.data);
         return response.data;
     } catch (error) {
-        console.error("API Error for getDataModelSource => ", error);
+        console.error("API Error for getAllDataModels => ", error);
         return handleApiError(error);
     }
 };
