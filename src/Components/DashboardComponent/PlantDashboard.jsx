@@ -589,7 +589,7 @@ import DataTable from '../Charts/DataTable';
 import InfoCard from '../Charts/InfoCard';
 import SvgImage from '../Charts/SvgImage';
 import RejectionForm from '../RejectionForm/form';
-import { getHistorialData } from '@/WebServices/ApiControllers';
+import { getHistorialData, getAlarmsData } from '@/WebServices/ApiControllers';
 import ChartCard from '../ChartCard/ChartCard';
 
 const PlantDashboard = ({ params }) => {
@@ -600,6 +600,7 @@ const PlantDashboard = ({ params }) => {
     const [timeRange, setTimeRange] = useState('24h');
     const [refreshRate, setRefreshRate] = useState(0);
     const [isRefreshDropdownOpen, setIsRefreshDropdownOpen] = useState(false);
+    const [alarmData, setAlarmData] = useState([]);
 
     // Data States
     const [svgData, setSvgData] = useState([]);
@@ -677,6 +678,37 @@ const PlantDashboard = ({ params }) => {
         }
     ];
 
+    // Add this function inside the PlantDashboard component
+    const processAlarms = (data) => {
+        // Group alarms by UUID
+        const alarmGroups = data.reduce((acc, alarm) => {
+            if (!acc[alarm.uuid]) {
+                acc[alarm.uuid] = [];
+            }
+            acc[alarm.uuid].push(alarm);
+            return acc;
+        }, {});
+
+        // Filter alarms based on the requirements
+        const filteredAlarms = [];
+        Object.values(alarmGroups).forEach(group => {
+            if (group.length === 2) {
+                // If there are two alarms with the same UUID
+                const activeAlarm = group.find(a => a.isactive === true);
+                const inactiveAlarm = group.find(a => a.isactive === false);
+                if (activeAlarm && inactiveAlarm) {
+                    // If one is active and one is inactive, show only the inactive one
+                    filteredAlarms.push(inactiveAlarm);
+                }
+            } else if (group.length === 1 && group[0].isactive === true) {
+                // If there's only one alarm and it's active, show it
+                filteredAlarms.push(group[0]);
+            }
+        });
+
+        return filteredAlarms.slice(0, 10); // Return only the last 10 alarms
+    };
+
     // Time range utility functions
     const getTimeRangeInDays = (range) => {
         switch (range) {
@@ -751,6 +783,23 @@ const PlantDashboard = ({ params }) => {
         }
     };
 
+    // Add this function to fetch alarm data
+    const fetchAlarmData = async () => {
+        try {
+            const params = {
+                tenantId: 'ff0d9ff0-2bec-4085-b084-59f9af315f89',
+                instanceId: instanceId,
+                limit: 1000
+            };
+            const data = await getAlarmsData(params);
+            const processedData = processAlarms(data);
+            setAlarmData(processedData);
+        } catch (error) {
+            console.error('Error fetching alarm data:', error);
+        }
+    };
+
+
     useEffect(() => {
         const fetchAllData = async () => {
             setIsLoading(true);
@@ -761,6 +810,7 @@ const PlantDashboard = ({ params }) => {
 
                 // Fetch all other data
                 await Promise.all([
+                    fetchAlarmData(),
                     fetchData(['P_GAS_LINE_B_HP', '	P_GAS_LINE_A_HP'], setBasicMetricsData),
                     fetchData(['AIR_FLOW_RPM'], setAirFlowData),
                     fetchData([
@@ -918,7 +968,7 @@ const PlantDashboard = ({ params }) => {
 
                     {/* Data Table */}
                     <div className="bg-white rounded-lg shadow-md">
-                        <DataTable data={dataTable} />
+                        <DataTable data={alarmData} />
                     </div>
 
                     {/* Charts Grid */}
