@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  // basePath: "/furnaceapp",
+  basePath: "/furnace",
   distDir: "build",
   output: "standalone",
   typescript: {

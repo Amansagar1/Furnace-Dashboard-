@@ -613,6 +613,31 @@ const PlantDashboard = ({ params }) => {
 
     const instanceId = "40ce6095-84c2-49a5-b5aa-c2f37ebdd40c";
 
+    // Add authentication check
+    useEffect(() => {
+        const token = Cookies.get('token');
+        const tenantId = Cookies.get('tenantId');
+
+        if (!token || !tenantId) {
+            router.push('/login');
+            return;
+        }
+    }, []);
+
+    // Prevent initial render until authentication is confirmed
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+        const token = Cookies.get('token');
+        if (token) {
+            setIsAuthenticated(true);
+        }
+    }, []);
+
+    if (!isAuthenticated) {
+        return null; // or a loading spinner
+    }
+
     const refreshOptions = [
         { label: 'Now', value: 0 },
         { label: '5 seconds', value: 5000 },
@@ -706,7 +731,7 @@ const PlantDashboard = ({ params }) => {
             }
         });
 
-        return filteredAlarms.slice(0, 10); // Return only the last 10 alarms
+        return filteredAlarms; // Return only the last 10 alarms
     };
 
     // Time range utility functions
@@ -960,7 +985,7 @@ const PlantDashboard = ({ params }) => {
                     </div>
 
                     {/* Stats Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
                         {dashboardStats.map((stat, index) => (
                             <DashboardInfoCard key={index} {...stat} />
                         ))}

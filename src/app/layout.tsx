@@ -300,6 +300,166 @@
 
 
 
+// "use client";
+
+// import React, { useState, useEffect } from "react";
+// import { Geist, Geist_Mono } from "next/font/google";
+// import "./globals.css";
+// import { useRouter, usePathname } from "next/navigation";
+// import Login from "./login/page";
+// import SessionExpired from "./sessionexpired/page";
+// import Cookies from "js-cookie";
+// import Navbar from '@/Components/Navigation/Navbar';
+// import Sidebar from '@/Components/Sidebar/Sidebar';
+
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
+
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
+
+// export default function RootLayout({
+//   children,
+// }: Readonly<{
+//   children: React.ReactNode;
+// }>) {
+//   const [isLoggedIn, setIsLoggedIn] = useState(false);
+//   const [sessionExpired, setSessionExpired] = useState(false);
+//   const [loading, setLoading] = useState(true);
+//   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+//   const [isCollapsed, setIsCollapsed] = useState(false);
+
+//   const router = useRouter();
+//   const pathname = usePathname();
+
+//   const handleCollapse = () => {
+//     setIsCollapsed(!isCollapsed);
+//   };
+
+//   const toggleSidebar = () => {
+//     setIsSidebarOpen(!isSidebarOpen);
+//   };
+
+//   const validateToken = (token: string) => {
+//     if (!token) return false;
+//     // Add your token validation logic here
+//     return true; // Placeholder return
+//   };
+
+//   const handleLogin = (token: string, tenantId: string) => {
+//     Cookies.set("token", token);
+//     Cookies.set("tenantId", tenantId);
+//     setIsLoggedIn(true);
+//     setSessionExpired(false);
+//     router.push("/overview"); // or your default landing page
+//   };
+
+//   const handleSignOut = () => {
+//     Cookies.remove('token');
+//     Cookies.remove('tenantId');
+//     Cookies.remove('licenseType');
+//     Cookies.remove('licenseEndDate');
+//     setIsLoggedIn(false);
+//     setSessionExpired(true);
+//     router.push('/sessionexpired');
+//   };
+
+//   useEffect(() => {
+//     if (pathname === "/login" || pathname === "/sessionexpired") {
+//       setLoading(false);
+//       return;
+//     }
+
+//     const token = Cookies.get("token");
+//     const tenantId = Cookies.get("tenantId");
+
+//     if (token && tenantId) {
+//       const isTokenValid = validateToken(token);
+//       if (isTokenValid) {
+//         setIsLoggedIn(true);
+//         setSessionExpired(false);
+//       } else {
+//         setSessionExpired(true);
+//         router.push("/sessionexpired");
+//       }
+//     } else {
+//       setSessionExpired(true);
+//       router.push("/sessionexpired");
+//     }
+
+//     setLoading(false);
+//   }, [pathname, router]);
+
+//   if (loading) {
+//     return (
+//       <html lang="en">
+//         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+//           <div className="flex justify-center items-center h-screen">
+//             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+//           </div>
+//         </body>
+//       </html>
+//     );
+//   }
+
+//   const isAuthPage = pathname === "/login" || pathname === "/sessionexpired";
+
+//   if (sessionExpired && !isAuthPage) {
+//     return (
+//       <html lang="en">
+//         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+//           <SessionExpired />
+//         </body>
+//       </html>
+//     );
+//   }
+
+//   return (
+//     <html lang="en">
+//       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+//         <div className="flex w-full">
+//           {isAuthPage ? (
+//             pathname === "/login" ? (
+//               <Login onLogin={handleLogin} />
+//             ) : (
+//               <SessionExpired />
+//             )
+//           ) : isLoggedIn ? (
+//             <div className="h-screen w-full">
+//               <Navbar 
+//                 toggleSidebar={toggleSidebar} 
+//                 handleSignOut={handleSignOut}
+//               />
+//               <div className="flex">
+//                 <Sidebar
+//                   isOpen={isSidebarOpen}
+//                   isCollapsed={isCollapsed}
+//                   handleCollapse={handleCollapse}
+//                 />
+//                 <main className={`pt-16 transition-all duration-300 w-screen
+//                   ${isSidebarOpen
+//                     ? (isCollapsed ? 'ml-16' : 'ml-64')
+//                     : 'ml-0'}`}>
+//                   {children}
+//                 </main>
+//               </div>
+//             </div>
+//           ) : (
+//             <Login onLogin={handleLogin} />
+//           )}
+//         </div>
+//       </body>
+//     </html>
+//   );
+// }
+
+
+
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -327,22 +487,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [sessionExpired, setSessionExpired] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [authState, setAuthState] = useState({
+    isLoggedIn: false,
+    sessionExpired: false,
+    isLoading: true
+  });
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+  const handleCollapse = () => setIsCollapsed(!isCollapsed);
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   const validateToken = (token: string) => {
     if (!token) return false;
@@ -350,12 +507,11 @@ export default function RootLayout({
     return true; // Placeholder return
   };
 
-  const handleLogin = (token: string, tenantId: string) => {
+  const handleLogin = async (token: string, tenantId: string) => {
     Cookies.set("token", token);
     Cookies.set("tenantId", tenantId);
-    setIsLoggedIn(true);
-    setSessionExpired(false);
-    router.push("/overview"); // or your default landing page
+    setAuthState(prev => ({ ...prev, isLoggedIn: true, sessionExpired: false }));
+    router.push("/overview");
   };
 
   const handleSignOut = () => {
@@ -363,38 +519,54 @@ export default function RootLayout({
     Cookies.remove('tenantId');
     Cookies.remove('licenseType');
     Cookies.remove('licenseEndDate');
-    setIsLoggedIn(false);
-    setSessionExpired(true);
+    setAuthState({
+      isLoggedIn: false,
+      sessionExpired: true,
+      isLoading: false
+    });
     router.push('/sessionexpired');
   };
 
   useEffect(() => {
-    if (pathname === "/login" || pathname === "/sessionexpired") {
-      setLoading(false);
-      return;
-    }
+    const checkAuth = async () => {
+      if (pathname === "/login" || pathname === "/sessionexpired") {
+        setAuthState(prev => ({ ...prev, isLoading: false }));
+        return;
+      }
 
-    const token = Cookies.get("token");
-    const tenantId = Cookies.get("tenantId");
+      const token = Cookies.get("token");
+      const tenantId = Cookies.get("tenantId");
 
-    if (token && tenantId) {
-      const isTokenValid = validateToken(token);
-      if (isTokenValid) {
-        setIsLoggedIn(true);
-        setSessionExpired(false);
+      if (token && tenantId) {
+        const isTokenValid = validateToken(token);
+        if (isTokenValid) {
+          setAuthState({
+            isLoggedIn: true,
+            sessionExpired: false,
+            isLoading: false
+          });
+        } else {
+          setAuthState({
+            isLoggedIn: false,
+            sessionExpired: true,
+            isLoading: false
+          });
+          router.push("/sessionexpired");
+        }
       } else {
-        setSessionExpired(true);
+        setAuthState({
+          isLoggedIn: false,
+          sessionExpired: true,
+          isLoading: false
+        });
         router.push("/sessionexpired");
       }
-    } else {
-      setSessionExpired(true);
-      router.push("/sessionexpired");
-    }
+    };
 
-    setLoading(false);
+    checkAuth();
   }, [pathname, router]);
 
-  if (loading) {
+  if (authState.isLoading) {
     return (
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
@@ -408,28 +580,18 @@ export default function RootLayout({
 
   const isAuthPage = pathname === "/login" || pathname === "/sessionexpired";
 
-  if (sessionExpired && !isAuthPage) {
-    return (
-      <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-          <SessionExpired />
-        </body>
-      </html>
-    );
-  }
-
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="flex w-screen">
+        <div className="flex w-full">
           {isAuthPage ? (
             pathname === "/login" ? (
               <Login onLogin={handleLogin} />
             ) : (
               <SessionExpired />
             )
-          ) : isLoggedIn ? (
-            <div className="h-screen w-screen">
+          ) : authState.isLoggedIn ? (
+            <div className="h-screen w-full">
               <Navbar 
                 toggleSidebar={toggleSidebar} 
                 handleSignOut={handleSignOut}
@@ -448,9 +610,7 @@ export default function RootLayout({
                 </main>
               </div>
             </div>
-          ) : (
-            <Login onLogin={handleLogin} />
-          )}
+          ) : null}
         </div>
       </body>
     </html>

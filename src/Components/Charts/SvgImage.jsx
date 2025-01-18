@@ -72,17 +72,90 @@
 // export default SvgImage;
 
 
+// import React, { useEffect, useState, useRef } from 'react';
+
+// const SvgImage = ({ data }) => {
+//     const [svgContent, setSvgContent] = useState('');
+//     const initialSvgRef = useRef(null);
+
+//     useEffect(() => {
+//         // Load the initial SVG only once
+//         const loadInitialSvg = async () => {
+//             try {
+//                 const response = await fetch('/images/Picture1.svg');
+//                 const svgText = await response.text();
+//                 initialSvgRef.current = svgText;
+//                 setSvgContent(svgText);
+//             } catch (error) {
+//                 console.error('Error loading initial SVG:', error);
+//             }
+//         };
+
+//         if (!initialSvgRef.current) {
+//             loadInitialSvg();
+//         }
+//     }, []);
+
+//     useEffect(() => {
+//         // Update SVG when data changes
+//         if (data?.length > 0 && initialSvgRef.current) {
+//             const updateSvg = () => {
+//                 try {
+//                     const lastValue = data[data.length - 1]?.value || 0;
+//                     const parser = new DOMParser();
+//                     const doc = parser.parseFromString(initialSvgRef.current, 'image/svg+xml');
+//                     const presElement = doc.getElementById('pres-1');
+
+//                     if (presElement) {
+//                         presElement.textContent = lastValue.toFixed(2);
+//                     }
+
+//                     const serializer = new XMLSerializer();
+//                     const modifiedSvg = serializer.serializeToString(doc);
+//                     setSvgContent(modifiedSvg);
+//                 } catch (error) {
+//                     console.error('Error updating SVG:', error);
+//                 }
+//             };
+
+//             updateSvg();
+//         }
+//     }, [data]);
+
+//     return (
+//         <div className="relative flex justify-center items-center p-6">
+//             <div
+//                 dangerouslySetInnerHTML={{ __html: svgContent }}
+//                 className='w-full h-auto'
+//             />
+//         </div>
+//     );
+// };
+
+// export default SvgImage;
+
+
+
 import React, { useEffect, useState, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 
 const SvgImage = ({ data }) => {
     const [svgContent, setSvgContent] = useState('');
     const initialSvgRef = useRef(null);
+    const pathname = usePathname();
 
     useEffect(() => {
         // Load the initial SVG only once
         const loadInitialSvg = async () => {
             try {
-                const response = await fetch('/images/Picture1.svg');
+                // Use the correct path with basePath
+                const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '/furnace';
+                const response = await fetch(`${basePath}/images/Picture1.svg`);
+
+                if (!response.ok) {
+                    throw new Error(`Failed to load SVG: ${response.status}`);
+                }
+
                 const svgText = await response.text();
                 initialSvgRef.current = svgText;
                 setSvgContent(svgText);
@@ -126,7 +199,7 @@ const SvgImage = ({ data }) => {
         <div className="relative flex justify-center items-center p-6">
             <div
                 dangerouslySetInnerHTML={{ __html: svgContent }}
-                className='w-full h-auto'
+                className="w-full h-auto"
             />
         </div>
     );

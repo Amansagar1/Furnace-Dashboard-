@@ -140,7 +140,7 @@ const DataTable = ({ data }) => {
                     Export
                 </button>
             </div>
-            <div className="overflow-x-auto rounded shadow-md border border-gray-400">
+            <div style={{ maxHeight: '400px' }} className="max-h-[20px] overflow-auto rounded shadow-md border border-gray-400">
                 <table className="min-w-full divide-y divide-gray-400">
                     <thead className="bg-gray-300">
                         <tr className="divide-x divide-gray-400">
