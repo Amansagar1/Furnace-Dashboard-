@@ -9,7 +9,8 @@ import { useRouter } from 'next/navigation';
 import Cookies from "js-cookie";
 
 const Login = ({ onLogin }) => {
-  const [tenantId, setTenantId] = useState('');
+  const defaultTenantId = 'ff0d9ff0-2bec-4085-b084-59f9af315f89';
+  const [tenantId, setTenantId] = useState(defaultTenantId);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
