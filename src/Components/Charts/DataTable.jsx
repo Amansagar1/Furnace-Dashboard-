@@ -147,7 +147,7 @@ const DataTable = ({ data }) => {
                             {tableHeaders.map((header) => (
                                 <th
                                     key={header.key}
-                                    className="px-4 py-2 text-left text-xs font-bold text-black uppercase tracking-wider"
+                                    className="px-4 py-2 text-left text-xs font-extrabold text-black uppercase tracking-wider"
                                 >
                                     {header.label}
                                 </th>

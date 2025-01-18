@@ -13,9 +13,9 @@ const getBaseUrl = () => {
     return "";
 };
 
-const BASE_URL = getBaseUrl();
+// const BASE_URL = getBaseUrl();
 
-//const BASE_URL = process.env.NEXT_PUBLIC_PROD_BASE_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_PROD_BASE_URL;
 
 const EndPoints = {
     // Login Api
@@ -36,6 +36,9 @@ const EndPoints = {
 
     GET_ALL_DATA_MODELS: (tenantId) =>
         BASE_URL + `/mgmtportalapi/api/v1/MgmtPortalApi/GetRegisteredDataModels?tenantId=${tenantId}`,
+
+    GET_PLANT360_SVG: (tenantId, svgName) =>
+        BASE_URL + `plant360/api/v1/Image/GetSVG?tenantId=${tenantId}&svgName=${svgName}`,
 };
 
 Object.freeze(EndPoints);

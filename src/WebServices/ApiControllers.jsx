@@ -109,6 +109,18 @@ export const getAllDataModels = async () => {
     }
 };
 
+export const getPlant360SVG = async (svgName) => {
+    try {
+        const tenantId = Cookies.get("tenantId");
+      const response = await axiosInstance.get(EndPoints.GET_PLANT360_SVG(tenantId, svgName));
+      console.log("API Response for getIconFiles => ", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("API Error for getIconFiles => ", error);
+      return handleApiError(error);
+    }
+};
+
 export const decodeToken = (token) => {
     try {
         const base64Url = token.split('.')[1];

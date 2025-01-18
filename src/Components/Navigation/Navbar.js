@@ -328,7 +328,7 @@ const Navbar = ({ handleSignOut, toggleSidebar }) => {
           <RxHamburgerMenu className="h-6 w-6" />
         </button>
         <div className="flex justify-center items-center space-x-2">
-          <span className="text-xl font-semibold">Furnace Monitoring</span>
+          <span className="text-xl font-semibold">Furnace Monitoring System</span>
         </div>
       </div>
 

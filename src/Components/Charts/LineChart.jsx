@@ -56,7 +56,30 @@ const LineChart = ({ data, title, yAxisLabel }) => {
 
         const option = {
             tooltip: {
-                trigger: 'axis'
+                trigger: 'axis',
+                formatter: function (params) {
+                    if (params && params.length > 0) {
+                        const timeData = data[0].data[params[0].dataIndex].formattedTime;
+                        let tooltipContent = `
+                            <div style="margin: 0 0 10px">
+                                <strong>${timeData.date} </strong>
+                                <strong>${timeData.time}</strong>
+                            </div>
+                        `;
+
+                        params.forEach(param => {
+                            tooltipContent += `
+                                <div style="display: flex; justify-content: space-between; margin: 5px 0">
+                                    <span>${param.seriesName}: </span>
+                                    <strong> ${param.value}</strong>
+                                </div>
+                            `;
+                        });
+
+                        return tooltipContent;
+                    }
+                    return '';
+                }
             },
             legend: {
                 data: data.map(series => series.name),
@@ -66,11 +89,11 @@ const LineChart = ({ data, title, yAxisLabel }) => {
                 top: 30,
                 right: 20,
                 bottom: 20,
-                left: 60
+                left: 80
             },
             xAxis: {
                 type: 'category',
-                data: data[0]?.data.map(item => item.time) || []
+                data: data[0]?.data.map(item => item.formattedTime.full) || []
             },
             yAxis: {
                 type: 'value',

@@ -136,52 +136,119 @@
 
 
 
-import React, { useEffect, useState, useRef } from 'react';
-import { usePathname } from 'next/navigation';
+// import React, { useEffect, useState, useRef } from 'react';
+// import { getPlant360SVG } from '@/WebServices/ApiControllers';
 
-const SvgImage = ({ data }) => {
+// const SvgImage = ({ data, svgName }) => {
+//     const [svgContent, setSvgContent] = useState('');
+//     const initialSvgRef = useRef(null);
+
+//     useEffect(() => {
+//         // Load the SVG from API
+//         const loadSvg = async () => {
+//             try {
+//                 const svgResponse = await getPlant360SVG(svgName);
+//                 if (svgResponse) {
+//                     initialSvgRef.current = svgResponse;
+//                     setSvgContent(svgResponse);
+//                 }
+//             } catch (error) {
+//                 console.error('Error loading SVG:', error);
+//             }
+//         };
+
+//         if (svgName && !initialSvgRef.current) {
+//             loadSvg();
+//         }
+//     }, [svgName]);
+
+//     useEffect(() => {
+//         // Update SVG when data changes
+//         if (data?.length > 0 && initialSvgRef.current) {
+//             const updateSvg = () => {
+//                 try {
+//                     const lastValue = data[data.length - 1]?.value || 0;
+//                     const parser = new DOMParser();
+//                     const doc = parser.parseFromString(initialSvgRef.current, 'image/svg+xml');
+//                     const presElement = doc.getElementById('2');
+
+//                     if (presElement) {
+//                         presElement.textContent = lastValue.toFixed(2);
+//                     }
+
+//                     const serializer = new XMLSerializer();
+//                     const modifiedSvg = serializer.serializeToString(doc);
+//                     setSvgContent(modifiedSvg);
+//                 } catch (error) {
+//                     console.error('Error updating SVG:', error);
+//                 }
+//             };
+
+//             updateSvg();
+//         }
+//     }, [data]);
+
+//     return (
+//         <div className="relative flex justify-center items-center p-6">
+//             <div
+//                 dangerouslySetInnerHTML={{ __html: svgContent }}
+//                 className="w-full h-auto"
+//             />
+//         </div>
+//     );
+// };
+
+// export default SvgImage;
+
+
+
+
+
+import React, { useEffect, useState, useRef } from 'react';
+import { getPlant360SVG } from '@/WebServices/ApiControllers';
+import { SVG_VARIABLE_MAP } from './Constants';
+
+const SvgImage = ({ data, svgName }) => {
     const [svgContent, setSvgContent] = useState('');
     const initialSvgRef = useRef(null);
-    const pathname = usePathname();
 
     useEffect(() => {
-        // Load the initial SVG only once
-        const loadInitialSvg = async () => {
+        const loadSvg = async () => {
             try {
-                // Use the correct path with basePath
-                const basePath = '/furnace';
-                const response = await fetch(`${basePath}/images/Picture1.svg`);
-
-                if (!response.ok) {
-                    throw new Error(`Failed to load SVG: ${response.status}`);
+                const svgResponse = await getPlant360SVG(svgName);
+                if (svgResponse) {
+                    initialSvgRef.current = svgResponse;
+                    setSvgContent(svgResponse);
                 }
-
-                const svgText = await response.text();
-                initialSvgRef.current = svgText;
-                setSvgContent(svgText);
             } catch (error) {
-                console.error('Error loading initial SVG:', error);
+                console.error('Error loading SVG:', error);
             }
         };
 
-        if (!initialSvgRef.current) {
-            loadInitialSvg();
+        if (svgName && !initialSvgRef.current) {
+            loadSvg();
         }
-    }, []);
+    }, [svgName]);
 
     useEffect(() => {
-        // Update SVG when data changes
-        if (data?.length > 0 && initialSvgRef.current) {
+        if (data && initialSvgRef.current) {
             const updateSvg = () => {
                 try {
-                    const lastValue = data[data.length - 1]?.value || 0;
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(initialSvgRef.current, 'image/svg+xml');
-                    const presElement = doc.getElementById('pres-1');
 
-                    if (presElement) {
-                        presElement.textContent = lastValue.toFixed(2);
-                    }
+                    // Update each variable's corresponding SVG element
+                    Object.entries(data).forEach(([variable, valueData]) => {
+                        const svgId = SVG_VARIABLE_MAP[variable];
+                        if (svgId && valueData && valueData.length > 0) {
+                            const element = doc.getElementById(svgId);
+                            if (element) {
+                                const lastValue = valueData[valueData.length - 1].value;
+                                element.textContent = typeof lastValue === 'number' ?
+                                    lastValue.toFixed(2) : lastValue;
+                            }
+                        }
+                    });
 
                     const serializer = new XMLSerializer();
                     const modifiedSvg = serializer.serializeToString(doc);

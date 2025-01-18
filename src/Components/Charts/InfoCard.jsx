@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus } from 'lucide-react';
+import { Settings } from 'lucide-react';
 
 const InfoCard = ({ machineData, onOpenRejectionForm }) => {
     const detailsData = [
@@ -7,11 +7,6 @@ const InfoCard = ({ machineData, onOpenRejectionForm }) => {
         { label: 'Active', value: machineData.active ? '✓' : '✗' },
         { label: 'MAC ID', value: machineData.macId },
         { label: 'MAC No', value: machineData.macNo },
-        // { label: 'MAC Cf', value: machineData.macCf },
-        // { label: 'Mold ID', value: machineData.moldId },
-        // { label: 'Part No', value: machineData.partNo },
-        // { label: 'Material Name', value: machineData.materialName },
-        // { label: 'Heater Status', value: machineData.heaterStatus }
     ];
 
     return (
@@ -20,10 +15,9 @@ const InfoCard = ({ machineData, onOpenRejectionForm }) => {
                 <h2 className="text-lg font-semibold">Machine details</h2>
                 <button
                     onClick={onOpenRejectionForm}
-                    className="flex items-center border p-2 bg-red-500 text-white rounded-lg text-xs hover:bg-red-600 transition-colors"
+                    className="flex justify-center text-red-500 items-center p-2 rounded-lg text-xs hover:text-red-700 transition-colors"
                 >
-                    <Plus className="w-4 h-4 mr-1" />
-                    Rejection
+                    <Settings className="w-5 h-5" />
                 </button>
             </div>
 
