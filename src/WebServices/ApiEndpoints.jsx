@@ -13,9 +13,9 @@ const getBaseUrl = () => {
     return "";
 };
 
-// const BASE_URL = getBaseUrl();
+const BASE_URL = getBaseUrl();
 
-const BASE_URL = process.env.NEXT_PUBLIC_PROD_BASE_URL;
+//const BASE_URL = process.env.NEXT_PUBLIC_PROD_BASE_URL;
 
 const EndPoints = {
     // Login Api

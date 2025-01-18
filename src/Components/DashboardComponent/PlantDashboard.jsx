@@ -614,29 +614,29 @@ const PlantDashboard = ({ params }) => {
     const instanceId = "40ce6095-84c2-49a5-b5aa-c2f37ebdd40c";
 
     // Add authentication check
-    useEffect(() => {
-        const token = Cookies.get('token');
-        const tenantId = Cookies.get('tenantId');
+    // useEffect(() => {
+    //     const token = Cookies.get('token');
+    //     const tenantId = Cookies.get('tenantId');
 
-        if (!token || !tenantId) {
-            router.push('/login');
-            return;
-        }
-    }, []);
+    //     if (!token || !tenantId) {
+    //         router.push('/login');
+    //         return;
+    //     }
+    // }, []);
 
     // Prevent initial render until authentication is confirmed
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    // const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    useEffect(() => {
-        const token = Cookies.get('token');
-        if (token) {
-            setIsAuthenticated(true);
-        }
-    }, []);
+    // useEffect(() => {
+    //     const token = Cookies.get('token');
+    //     if (token) {
+    //         setIsAuthenticated(true);
+    //     }
+    // }, []);
 
-    if (!isAuthenticated) {
-        return null; // or a loading spinner
-    }
+    // if (!isAuthenticated) {
+    //     return null; // or a loading spinner
+    // }
 
     const refreshOptions = [
         { label: 'Now', value: 0 },

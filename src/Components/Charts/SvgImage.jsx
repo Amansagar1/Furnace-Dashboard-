@@ -149,7 +149,7 @@ const SvgImage = ({ data }) => {
         const loadInitialSvg = async () => {
             try {
                 // Use the correct path with basePath
-                const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '/furnace';
+                const basePath = '/furnace';
                 const response = await fetch(`${basePath}/images/Picture1.svg`);
 
                 if (!response.ok) {
